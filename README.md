@@ -1,114 +1,231 @@
-# OpenCV Object Detection and Measurement
+#  Automated Object Detection and Cropping System with OpenCV
 
-A real-time object detection and measurement system using OpenCV that can detect objects through a webcam and measure their dimensions in pixels.
+A comprehensive object detection and cropping system using YOLOv8 and OpenCV that can detect objects in images and automatically crop them into separate files organized by class.
 
 ## Features
 
-- **Real-time Object Detection**: Captures video from webcam and detects objects in real-time
-- **Contour Analysis**: Uses OpenCV's contour detection to identify object boundaries
-- **Dimension Measurement**: Calculates and displays object length and height in pixels
-- **Visual Feedback**: Draws bounding boxes around detected objects with measurement labels
-- **Noise Filtering**: Filters out small noise objects using area threshold
+- **YOLOv8 Object Detection**: Uses state-of-the-art YOLOv8 model for accurate object detection
+- **Multi-Class Support**: Detects 80 different object classes from the COCO dataset
+- **Automatic Cropping**: Extracts detected objects as individual image files
+- **Organized Output**: Saves cropped objects in class-specific folders
+- **Batch Processing**: Process single images or entire folders
+- **GUI Interface**: User-friendly graphical interface for easy operation
+- **Command Line Interface**: Script-based processing for automation
+- **Confidence Control**: Adjustable confidence threshold for detection accuracy
+- **Annotated Output**: Generates annotated images with bounding boxes
+
+## Supported Object Classes
+
+The system can detect 80 different object classes including:
+- **People**: person
+- **Vehicles**: car, truck, bus, motorcycle, bicycle, airplane, boat
+- **Animals**: dog, cat, horse, sheep, cow, elephant, bear, zebra, giraffe
+- **Objects**: chair, couch, bed, table, tv, laptop, phone, book, clock
+- **Food**: apple, banana, orange, pizza, cake, hot dog, sandwich
+- **And many more...**
 
 ## Requirements
 
-- Python 3.6+
+- Python 3.8+
 - OpenCV (cv2)
-- Webcam
+- Ultralytics (YOLOv8)
+- NumPy
+- Matplotlib
+- Pillow
+- scikit-image
+- tkinter (for GUI)
 
 ## Installation
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Phani69/opencv-object-measurement.git
-   cd opencv-object-measurement
-   ```
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Phani69/opencv-object-measurement.git
+cd opencv-object-measurement
+```
 
-2. **Install dependencies**:
-   ```bash
-   pip install opencv-python
-   ```
+### 2. Create Virtual Environment (Recommended)
+```bash
+# Create virtual environment
+python3 -m venv venv
 
-3. **Run the application**:
-   ```bash
-   python Object_Detection.py
-   ```
+# Activate virtual environment
+# On macOS/Linux:
+source venv/bin/activate
+# On Windows:
+venv\Scripts\activate
+
+# Or use the provided activation script:
+./activate_env.sh
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Download YOLO Model
+The project includes a pre-trained YOLOv8n model (`yolov8n.pt`). If you need a different model:
+```bash
+# Download YOLOv8n (nano) - already included
+# Download YOLOv8s (small)
+wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8s.pt
+
+# Download YOLOv8m (medium)
+wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8m.pt
+
+# Download YOLOv8l (large)
+wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8l.pt
+```
 
 ## Usage
 
-1. **Start the application**: Run the script and it will open your webcam
-2. **Position objects**: Place objects in front of the camera
-3. **View measurements**: The system will display bounding boxes with length and height measurements
-4. **Exit**: Press 'q' to quit the application
+### GUI Interface (Recommended)
 
-## How it Works
+1. **Start the GUI**:
+   ```bash
+   python gui.py
+   ```
 
-### Object Detection Process
+2. **Configure Settings**:
+   - Adjust confidence threshold using the slider
+   - Select single image or folder of images
 
-1. **Video Capture**: Captures frames from the webcam at 1280x720 resolution
-2. **Image Preprocessing**:
-   - Converts frames to grayscale
-   - Applies Gaussian blur to reduce noise
-   - Uses binary thresholding to segment objects from background
-3. **Contour Detection**: Finds external contours of objects
-4. **Measurement**: Calculates minimum area rectangle for each object
-5. **Display**: Draws bounding boxes and displays dimensions
+3. **Process Images**:
+   - Click "Process Images" to start detection
+   - Monitor progress in the status window
 
-### Key Parameters
+### Command Line Interface
 
-- **Resolution**: 1280x720 (HD)
-- **Blur Kernel**: 5x5 Gaussian blur
-- **Threshold**: 160 (binary threshold for object segmentation)
-- **Minimum Area**: 500 pixels (filters out noise)
-
-## Code Structure
-
-```python
-# Main components:
-- Video capture setup
-- Image preprocessing pipeline
-- Contour detection and analysis
-- Dimension calculation
-- Visual output
+#### Process Single Image
+```bash
+python Object_Detection.py --input path/to/image.jpg
 ```
 
-## Output
+#### Process Multiple Images
+```bash
+python Object_Detection.py --input path/to/image/folder
+```
 
-The application displays:
-- Live video feed with detected objects
-- Green bounding boxes around objects
-- Text showing length and height in pixels
-- Resized display (1200x800) for better visibility
+#### Custom Settings
+```bash
+# With custom confidence threshold
+python Object_Detection.py --input image.jpg --confidence 0.3
 
-## Customization
+# With custom model
+python Object_Detection.py --input image.jpg --model yolov8s.pt
+```
 
-You can modify the following parameters in `Object_Detection.py`:
+#### Command Line Options
+- `--input, -i`: Path to input image file or folder (required)
+- `--model, -m`: Path to YOLO model file (default: yolov8n.pt)
+- `--confidence, -c`: Confidence threshold (default: 0.5)
 
-- **Camera resolution**: Change `cap.set()` values
-- **Threshold value**: Adjust the binary threshold (currently 160)
-- **Minimum area**: Change the noise filter threshold (currently 500)
-- **Display size**: Modify the resize dimensions
+## Output Structure
+
+The system creates timestamped output folders with the following structure:
+
+```
+detected_objects_20241201_143022/
+├── person/
+│   ├── image1_person_001_conf0.85.jpg
+│   └── image1_person_002_conf0.92.jpg
+├── car/
+│   ├── image1_car_001_conf0.78.jpg
+│   └── image2_car_001_conf0.89.jpg
+├── dog/
+│   └── image1_dog_001_conf0.95.jpg
+└── annotated_image1.jpg
+```
+
+### Output Files
+- **Class folders**: Each detected object class gets its own folder
+- **Cropped images**: Individual object images with confidence scores
+- **Annotated images**: Original images with bounding boxes and labels
+
+## How It Works
+
+### Detection Process
+
+1. **Model Loading**: Loads pre-trained YOLOv8 model
+2. **Image Processing**: Reads and preprocesses input images
+3. **Object Detection**: Runs YOLO inference to detect objects
+4. **Confidence Filtering**: Filters detections based on confidence threshold
+5. **Object Cropping**: Extracts bounding box regions as separate images
+6. **File Organization**: Saves cropped objects in class-specific folders
+7. **Annotation**: Creates annotated versions with bounding boxes
+
+### Key Components
+
+- **YOLOv8 Model**: State-of-the-art object detection model
+- **OpenCV**: Image processing and file I/O
+- **Ultralytics**: YOLO model interface and inference
+- **Tkinter**: GUI framework for user interface
+
+## Configuration
+
+### Confidence Threshold
+- **Default**: 0.5 (50% confidence)
+- **Range**: 0.1 to 1.0
+- **Lower values**: More detections, potentially more false positives
+- **Higher values**: Fewer detections, higher accuracy
+
+### Model Selection
+- **YOLOv8n**: Fastest, smallest model (default)
+- **YOLOv8s**: Small model, good balance of speed/accuracy
+- **YOLOv8m**: Medium model, higher accuracy
+- **YOLOv8l**: Large model, highest accuracy
+
+## Performance
+
+### Speed vs Accuracy Trade-off
+- **YOLOv8n**: ~6ms inference time, good for real-time applications
+- **YOLOv8s**: ~12ms inference time, better accuracy
+- **YOLOv8m**: ~25ms inference time, high accuracy
+- **YOLOv8l**: ~45ms inference time, highest accuracy
+
+### Hardware Requirements
+- **Minimum**: CPU-only processing (slower)
+- **Recommended**: GPU with CUDA support (much faster)
+- **Memory**: 4GB RAM minimum, 8GB+ recommended
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Camera not found**: Ensure your webcam is connected and not in use by another application
-2. **Poor detection**: Adjust lighting conditions or threshold values
-3. **High CPU usage**: Reduce resolution or increase blur kernel size
+1. **Model not found**: Ensure `yolov8n.pt` is in the project directory
+2. **Import errors**: Activate virtual environment and install requirements
+3. **CUDA errors**: Install PyTorch with CUDA support for GPU acceleration
+4. **Memory issues**: Use smaller model or reduce batch size
 
 ### Performance Tips
 
-- Use good lighting for better object detection
-- Keep objects at a reasonable distance from the camera
-- Close other applications using the webcam
+- Use GPU acceleration when available
+- Adjust confidence threshold based on your needs
+- Process images in batches for better efficiency
+- Close other applications to free up memory
+
+## File Structure
+
+```
+opencv-object-measurement/
+├── Object_Detection.py      # Main detection script
+├── gui.py                   # Graphical user interface
+├── yolov8n.pt              # YOLOv8 nano model
+├── requirements.txt         # Python dependencies
+├── activate_env.sh         # Virtual environment activation script
+├── README.md               # This file
+├── .gitignore              # Git ignore rules
+└── venv/                   # Virtual environment (created)
+```
 
 ## Contributing
 
-Feel free to contribute to this project by:
-- Reporting bugs
-- Suggesting new features
-- Submitting pull requests
+Contributions are welcome! Please feel free to:
+
+- Report bugs and issues
+- Suggest new features
+- Submit pull requests
+- Improve documentation
 
 ## License
 
@@ -121,3 +238,9 @@ Created by Phani69
 ## Repository
 
 GitHub: https://github.com/Phani69/opencv-object-measurement.git
+
+## Acknowledgments
+
+- [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLOv8
+- [OpenCV](https://opencv.org/) for computer vision capabilities
+- [COCO Dataset](https://cocodataset.org/) for object classes
