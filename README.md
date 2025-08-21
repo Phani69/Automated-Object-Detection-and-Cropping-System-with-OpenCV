@@ -183,10 +183,6 @@ detected_objects_20241201_143022/
 - **YOLOv8m**: ~25ms inference time, high accuracy
 - **YOLOv8l**: ~45ms inference time, highest accuracy
 
-### Hardware Requirements
-- **Minimum**: CPU-only processing (slower)
-- **Recommended**: GPU with CUDA support (much faster)
-- **Memory**: 4GB RAM minimum, 8GB+ recommended
 
 ## Troubleshooting
 
@@ -197,25 +193,8 @@ detected_objects_20241201_143022/
 3. **CUDA errors**: Install PyTorch with CUDA support for GPU acceleration
 4. **Memory issues**: Use smaller model or reduce batch size
 
-### Performance Tips
 
-- Use GPU acceleration when available
-- Adjust confidence threshold based on your needs
-- Process images in batches for better efficiency
-- Close other applications to free up memory
 
-## File Structure
-
-```
-opencv-object-measurement/
-├── Object_Detection.py      # Main detection script
-├── gui.py                   # Graphical user interface
-├── yolov8n.pt              # YOLOv8 nano model
-├── requirements.txt         # Python dependencies
-├── activate_env.sh         # Virtual environment activation script
-├── README.md               # This file
-├── .gitignore              # Git ignore rules
-└── venv/                   # Virtual environment (created)
 ```
 
 ## Contributing
