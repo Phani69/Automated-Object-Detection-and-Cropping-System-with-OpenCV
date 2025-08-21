@@ -193,10 +193,6 @@ detected_objects_20241201_143022/
 3. **CUDA errors**: Install PyTorch with CUDA support for GPU acceleration
 4. **Memory issues**: Use smaller model or reduce batch size
 
-
-
-```
-
 ## Contributing
 
 Contributions are welcome! Please feel free to:
