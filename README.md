@@ -212,8 +212,7 @@ Created by Phani69
 
 ## Repository
 
-GitHub: https://github.com/Phani69/opencv-object-measurement.git
-
+GitHub: https://github.com/Phani69/Automated-Object-Detection-and-Cropping-System-with-OpenCV.git
 ## Acknowledgments
 
 - [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLOv8
