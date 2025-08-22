@@ -39,7 +39,7 @@ The system can detect 80 different object classes including:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Phani69/opencv-object-measurement.git
+git clone https://github.com/Phani69/Automated-Object-Detection-and-Cropping-System-with-OpenCV.git
 cd opencv-object-measurement
 ```
 
